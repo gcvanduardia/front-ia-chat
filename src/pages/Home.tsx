@@ -80,7 +80,7 @@ const Home: React.FC = () => {
             <IonAvatar slot='start'>
               <img src={"img/bot.avif"} />
             </IonAvatar>
-            <IonTitle>Chat EssBot</IonTitle>
+            <IonTitle>Chat IABot</IonTitle>
           </IonItem>
         </IonToolbar>
       </IonHeader>
@@ -137,14 +137,14 @@ const Home: React.FC = () => {
                           ))}
                         </p>
                       )} */}
-                      {/* {message.messageEnd && (
+                      {message.messageEnd && (
                         <div style={{ overflow: 'auto', whiteSpace: 'normal', width: '100%' }}>
                           <IonText slot='start' color={message.user === 'Bot' ? 'primary' : 'secondary'} style={{ position: 'absolute', top: '0', fontWeight: 'bold' }}>{message.user}</IonText>
                           <ReactMarkdown>
                             {message.messageEnd}
                           </ReactMarkdown>
                         </div>
-                      )} */}
+                      )}
                       <small slot='start' className={message.user === 'Bot' ? 'colorBot' : 'colorUser'}>{format(new Date(message.date), 'HH:mm')}</small>
                     </div>
                   </IonItem>
