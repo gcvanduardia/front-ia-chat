@@ -1,25 +1,42 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonList, IonItem, IonGrid, IonRow, IonCol, IonAvatar, IonText, IonSpinner } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonList, IonItem, IonGrid, IonRow, IonCol, IonAvatar, IonText, IonSpinner, IonIcon, IonFooter } from '@ionic/react';
 import './Home.css';
-import { getApiData, postApiData } from "../shared/services/api/apiService";
+import { getApiData, postApiData } from "../../shared/services/api/apiService";
 import { useEffect, useState, useRef } from 'react';
 import { format } from 'date-fns';
-import Table from "../shared/components/table/Table";
+import Table from "../../shared/components/table/Table";
 import ReactMarkdown from 'react-markdown';
+import { useHistory } from 'react-router-dom';
+import { arrowBack } from 'ionicons/icons';
+import { useMessages } from "../../shared/services/global/global";
+
 
 
 const Home: React.FC = () => {
 
+  const globalContext = useMessages();
+  if (!globalContext) {
+    throw new Error("Global context is undefined");
+  }
+  const { messages, setMessages, sequence, setSequence } = globalContext;
+
   const inputRef: any = useRef();
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<{ user: string, message: string, date: string, add_type: string, add_data?: any, table_title?:any, table_legend?:any, add_images?:any, messageEnd?:string }[]>([]);
-  const [sequence, setSequence] = useState(1);
+  /* const [messages, setMessages] = useState<{ user: string, message: string, date: string, add_type: string, add_data?: any, table_title?: any, table_legend?: any, add_images?: any, messageEnd?: string }[]>([]); */
+  /* const [sequence, setSequence] = useState(1); */
   const [botTyping, setBotTyping] = useState(false);
+  const history = useHistory();
+
+  const goBackToDashboard = () => {
+    history.push('/Dashboard');
+  }
 
   useEffect(() => {
-    getApiData('v1/chat/init').then(data => {
-      console.log('bot response: ', data);
-      setMessages([data]);
-    }).catch(error => console.error(error));
+    if (messages.length === 0) {
+      getApiData('v1/chat/init').then(data => {
+        console.log('bot response: ', data);
+        setMessages([data]);
+      }).catch(error => console.error(error));
+    }
 
     showTable([
       { Asunto: 'TFV', Visitas: 30 },
@@ -74,30 +91,48 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
+      {/* <IonHeader mode='ios'>
+        <IonToolbar className='ion-text-aling-center'>
           <IonItem lines='none'>
+            <IonButton slot="start" onClick={goBackToDashboard} fill='clear'>
+              <IonIcon icon={arrowBack} />
+              Back
+            </IonButton>
             <IonAvatar slot='start'>
               <img src={"img/bot.avif"} />
             </IonAvatar>
             <IonTitle>Chat EssBot</IonTitle>
           </IonItem>
         </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
+      </IonHeader> */}
+      <IonContent>
+        <IonHeader>
+          <IonToolbar mode='ios'>
+            <IonItem lines='none'>
+              {/* <IonButton slot="start" onClick={goBackToDashboard} fill='clear'>
+                <IonIcon icon={arrowBack} />
+                Back
+              </IonButton> */}
+              <IonAvatar slot='start'>
+                <img src={"img/bot.avif"} />
+              </IonAvatar>
+              <IonTitle slot='start'>Chat EssBot</IonTitle>
+            </IonItem>
+          </IonToolbar>
+        </IonHeader>
         <IonGrid fixed>
           <IonRow>
             <IonCol size="12">
               <IonList>
                 {messages.map((message, index) => (
                   <IonItem key={`IonItem-${index}`} lines='none' className='alignItem'>
-                    <IonAvatar slot={message.user === 'Bot' ? 'start' : 'end'}>
+                    <IonAvatar className='ion-avatar' slot={message.user === 'Bot' ? 'start' : 'end'}>
                       <img src={message.user === 'Bot' ? "img/bot.avif" : "img/person.avif"} />
                     </IonAvatar>
-                    <div className={message.user === 'Bot' ? 'chatBot' : 'chatUser'} style={{ position: 'relative' }}>
+                    <div className={message.user === 'Bot' ? 'chatBot' : 'chatUser'}>
                       <p style={{ position: 'relative' }} className={message.user === 'Bot' ? 'colorBot' : 'colorUser'}>
                         {/* <IonText slot='start' style={{ fontWeight: 'bold' }} className={message.user === 'Bot' ? 'colorBot' : 'colorUser'}>{message.user}</IonText> */}
-                        {message.message.split('\n').map((line, i) => (
+                        {message.message.split('\n').map((line: string, i: number) => (
                           <span key={i} className={message.user === 'Bot' ? 'colorBot' : 'colorUser'}>
                             {line.trim()}
                             <br />
@@ -156,14 +191,14 @@ const Home: React.FC = () => {
                     </IonAvatar>
                     <div className='chatBot' style={{ position: 'relative' }}>
                       <p>
-                        <IonText slot='start' color='primary' style={{ position: 'absolute', top: '0', fontWeight: 'bold' }}>Bot</IonText>
+                        {/* <IonText slot='start' color='primary' style={{ position: 'absolute', top: '0', fontWeight: 'bold' }}>Bot</IonText> */}
                         <IonSpinner name="dots"></IonSpinner>
                       </p>
                     </div>
                   </IonItem>
                 )}
               </IonList>
-              <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+              {/* <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
                 <IonItem style={{ flex: 1, borderRadius: '10px', border: '1px solid' }}>
                   <IonInput
                     ref={inputRef}
@@ -173,11 +208,26 @@ const Home: React.FC = () => {
                   />
                 </IonItem>
                 <IonButton mode='ios' onClick={sendMessage} style={{ marginLeft: '10px' }}>Send</IonButton>
-              </div>
+              </div> */}
             </IonCol>
           </IonRow>
         </IonGrid>
       </IonContent>
+      <IonFooter>
+        <IonToolbar mode='ios'>
+          <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+            <IonItem style={{ flex: 1, borderRadius: '10px', border: '1px solid' }}>
+              <IonInput
+                ref={inputRef}
+                onIonChange={e => e.detail.value && setMessage(e.detail.value)}
+                onKeyDown={e => e.key === 'Enter' && sendMessage()}
+                placeholder="Enter Message"
+              />
+            </IonItem>
+            <IonButton mode='ios' onClick={sendMessage} style={{ marginLeft: '10px' }}>Send</IonButton>
+          </div>
+        </IonToolbar>
+      </IonFooter>
     </IonPage>
   );
 };
