@@ -30,19 +30,17 @@ const Home: React.FC = () => {
     history.push('/Dashboard');
   }
 
+  let initFlag = true
   useEffect(() => {
-    if (messages.length === 0) {
+    if (messages.length === 0 && initFlag) {
+      initFlag = false;
+      setBotTyping(true);
       getApiData('v1/chat/init').then(data => {
         console.log('bot response: ', data);
         setMessages([data]);
+        setBotTyping(false);
       }).catch(error => console.error(error));
     }
-
-    showTable([
-      { Asunto: 'TFV', Visitas: 30 },
-      { Asunto: 'Visitas', Visitas: 160 }
-    ]);
-
   }, []);
 
   const sendMessage = () => {

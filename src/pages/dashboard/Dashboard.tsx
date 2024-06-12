@@ -48,9 +48,9 @@ const Dashboard: FC = () => {
             </IonContent>
             <IonFooter mode='ios'>
                 <IonToolbar>
-                    <IonPopover className='popover' trigger="click-trigger" triggerAction="click" arrow={true} reference="event" mode='ios' size='auto' side='top' alignment='start'>
+                    {/* <IonPopover className='popover' trigger="click-trigger" triggerAction="click" arrow={true} reference="event" mode='ios' size='auto' side='top' alignment='start'>
                         <Home />
-                    </IonPopover>
+                    </IonPopover> */}
                     <IonButton slot="end" fill='clear' size='small' mode='ios' onClick={toggleHome}>
                         <img src={"img/bot.avif"} className="circular-image" />
                     </IonButton>
