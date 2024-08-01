@@ -31,7 +31,7 @@ const Dashboard: FC = () => {
                                 <iframe
                                     width="100%"
                                     height="100%"
-                                    src="https://lookerstudio.google.com/embed/reporting/c75c9f4d-9efe-4cf1-afda-3e76df869eb4/page/BMO2D"
+                                    src="https://lookerstudio.google.com/embed/reporting/3233d76b-fadc-4b0c-9095-655e15be0d67/page/BMO2D"
                                     style={{ border: 0 }}
                                     allowFullScreen
                                     sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
@@ -39,7 +39,7 @@ const Dashboard: FC = () => {
                             </div>
                         </IonCol>
                         {showHome && (
-                            <IonCol size="5">
+                            <IonCol size="7">
                                 <Home />
                             </IonCol>
                         )}

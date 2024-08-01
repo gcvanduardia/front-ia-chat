@@ -114,7 +114,7 @@ const Home: React.FC = () => {
               <IonAvatar slot='start'>
                 <img src={"img/bot.avif"} />
               </IonAvatar>
-              <IonTitle slot='start'>Chat EssBot</IonTitle>
+              <IonTitle slot='start'>Chat Now IA</IonTitle>
             </IonItem>
           </IonToolbar>
         </IonHeader>
@@ -130,7 +130,7 @@ const Home: React.FC = () => {
                     <div className={message.user === 'Bot' ? 'chatBot' : 'chatUser'}>
                       <p style={{ position: 'relative' }} className={message.user === 'Bot' ? 'colorBot' : 'colorUser'}>
                         {/* <IonText slot='start' style={{ fontWeight: 'bold' }} className={message.user === 'Bot' ? 'colorBot' : 'colorUser'}>{message.user}</IonText> */}
-                        {message.message.split('\n').map((line: string, i: number) => (
+                        { message.message.split('\n').map((line: string, i: number) => (
                           <span key={i} className={message.user === 'Bot' ? 'colorBot' : 'colorUser'}>
                             {line.trim()}
                             <br />
